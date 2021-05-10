@@ -16,10 +16,7 @@ const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
 
-let PORT = process.env.PORT;
-if (PORT === null || PORT === undefined || PORT === ''){
-    PORT = 5050;
-}
+let PORT = process.env.PORT || 5050;
 
 
 const db = knex({
