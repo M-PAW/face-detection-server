@@ -42,7 +42,9 @@ app.get('/', (req,res) => {
     res.status(200).json(database.users)
 })
 
-
+app.get('/online', (req,res) => {
+    res.status(200).json("Server Online")
+})
 
 /**
  *  /sign in, Post
