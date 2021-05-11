@@ -38,7 +38,7 @@ const db = knex({
 
 
 app.get('/', (req,res) => {
-    res.status(200).json(database.users)
+    res.status(200).json("It's Working")
 })
 
 app.get('/online', (req,res) => {
