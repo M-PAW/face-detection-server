@@ -23,10 +23,12 @@ const PORT = process.env.PORT || 5050;
 
 const db = knex({
     client: 'pg',
-    connection: {
-        connectionString: process.env.DATABASE_URL,
-        ssl: true,
-    }
+    connection: { 
+        connectionString: process.env.DATABASE_URL, // dynamic database value for heroku    
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
 });
 
 // db.select('*').from('users').then(data => {
