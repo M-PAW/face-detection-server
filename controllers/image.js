@@ -1,4 +1,3 @@
-
 require('dotenv').config()
 
 const Clarifai =  require('clarifai');
@@ -12,16 +11,14 @@ const handleApiCall = (req, res) => {
     app.models
       .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
       .then(data => {
-        res.status(200).json(data);
+        res.status(200).json(data.outputs[0].data.regions);
       })
       .catch(err => res.status(400).json('Unable to Access API'));
   };
 
 
 const handleImage = (req,res, db) => {
-
     const { id } = req.body;
-
     db('users')
         .where('id','=', id)
         .increment('entries', 1)
