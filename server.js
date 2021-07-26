@@ -1,4 +1,3 @@
-
 require('dotenv').config()
 
 const express = require('express');
@@ -6,18 +5,19 @@ const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const helmet = require('helmet');
 const knex = require('knex');
-
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(cors());
-
+const morgan = require('morgan');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 const auth = require('./middleware/authorization');
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(cors());
+app.use(morgan('dev'));
 
 
 const PORT = process.env.PORT || 5050;
@@ -35,15 +35,14 @@ const db = knex({
 
 app.get('/online', (req,res) => {
     res.status(200).json("Server Online")
-})
+});
 
 /**
  *  /sign in, Post
  * returns: success / failure
  */
 app.post('/signin',
-        auth.requireAuth,
-        (req, res) => { signin.handleSignin(req, res, db, bcrypt)}
+        (req, res) => { signin.signinAuthentication(req, res, db, bcrypt)}
 );
 
 /**
@@ -51,7 +50,6 @@ app.post('/signin',
  *   returns: post / user
  */
 app.post('/register',
-        auth.requireAuth,
         (req,res) => { register.handleRegister(req, res, db, bcrypt)}
 );
 
@@ -62,7 +60,7 @@ app.post('/register',
 app.post('/logout',
         auth.requireAuth,
         (req,res) => { logout.handleLogout(req, res)}
-)
+);
 
 /**
  *  /profile/:userId, get
@@ -71,6 +69,15 @@ app.post('/logout',
 app.get(`/profile/:id`,
         auth.requireAuth,
         (req,res) => { profile.handleProfileGet(req, res, db)}
+);
+
+/**
+ *  /profile/:userId, post
+ *  updates the user profile
+ */
+app.post('/profile/:id',
+        auth.requireAuth,
+        (req,res) => { profile.handleProfileUpdate(req, res, db)}
 );
 
 /**
@@ -95,4 +102,4 @@ app.put('/image',
 
 app.listen(PORT, () => {
     console.log(`Server Online: http://localhost:${PORT}/`);
-})
+});
