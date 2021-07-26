@@ -1,4 +1,4 @@
-
+const redisClient = require('../redis/redisCongif').redisClient;
 
 
 /**
