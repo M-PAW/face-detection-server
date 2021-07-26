@@ -14,3 +14,7 @@ const handleLogout = (req, res, redis) => {
         }
     })
 }
+
+module.exports = {
+    handleLogout: handleLogout
+}
