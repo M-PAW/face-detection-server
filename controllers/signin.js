@@ -1,5 +1,6 @@
+const redisClient = require('../redis/redisCongif').redisClient;
 
-const handleSignin = (req, res, db, bcrypt) => {
+const handleSignin = (req, res, db, bcrypt => {
     const {email, password} = req.body;
 
     if (!email || !password) {
